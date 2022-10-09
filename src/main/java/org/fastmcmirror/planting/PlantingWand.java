@@ -35,6 +35,19 @@ public final class PlantingWand extends JavaPlugin {
             iapi = new InternationalizationAPI(getMinecraftVersion(Bukkit.getBukkitVersion()), MinecraftLanguage.valueOf(getConfig().getString("i18n")), getDataFolder() + "/i18n/");
         });
         getCommand("plantingwand").setExecutor(new PlantCommand());
+        printLogo("                                          \n" +
+                "──────────────────────────────────────────\n" +
+                "                                          \n" +
+                "╔═╗┬  ┌─┐┌┐┌┌┬┐┬┌┐┌┌─┐╦ ╦┌─┐┌┐┌┌┬┐        \n" +
+                "╠═╝│  ├─┤│││ │ │││││ ┬║║║├─┤│││ ││        \n" +
+                "╩  ┴─┘┴ ┴┘└┘ ┴ ┴┘└┘└─┘╚╩╝┴ ┴┘└┘─┴┘        \n" +
+                "                                          \n" +
+                "──────────────────────────────────────────\n" +
+                "                                          \n" +
+                "Author: " + getDescription().getAuthors().get(0) + "\n" +
+                "Version: " + getDescription().getVersion() + "\n" +
+                "MC-Version: " + getMinecraftVersion(Bukkit.getBukkitVersion()) + "\n" +
+                "InternationalizationAPI-Language: " + MinecraftLanguage.valueOf(getConfig().getString("i18n")).toString().toUpperCase());
         // Plugin startup logic
 
     }
@@ -76,5 +89,11 @@ public final class PlantingWand extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public void printLogo(String text){
+        for (String l : text.split("\n")){
+            getLogger().info(l);
+        }
     }
 }

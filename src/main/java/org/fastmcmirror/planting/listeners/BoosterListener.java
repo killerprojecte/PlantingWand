@@ -69,10 +69,11 @@ public class BoosterListener implements Listener {
             for(int z = (int) (location.getBlockZ() - range); z <= location.getBlockZ() + range; z++) {
                 Location location1 = new Location(location.getWorld(),x,location.getBlockY(),z);
                 if (!location.getWorld().getBlockAt(location1).getType().equals(wand.plant)) continue;
+                Block block = location.getWorld().getBlockAt(location1);
+                BlockState state = block.getState();
+                Crops crops = (Crops) state.getData();
+                if (crops.getState().equals(CropState.RIPE)) continue;
                 Bukkit.getScheduler().runTask(PlantingWand.instance,() -> {
-                    Block block = location.getWorld().getBlockAt(location1);
-                    BlockState state = block.getState();
-                    Crops crops = (Crops) state.getData();
                     crops.setState(CropState.RIPE);
                     state.setData(crops);
                     state.update();
