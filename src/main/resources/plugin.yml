@@ -1,0 +1,21 @@
+name: PlantingWand
+version: '${version}'
+main: org.fastmcmirror.planting.PlantingWand
+api-version: 1.13
+authors: [ FlyProject ]
+description: Quick seeding with PlantingWand
+commands:
+  plantingwand:
+    permission: plantingwand.admin
+    aliases:
+      - pwand
+      - plantwand
+      - plantingw
+      - pw
+permissions:
+  plantingwand.*:
+    default: op
+  plantingwand.admin:
+    default: op
+  plantingwand.example:
+    default: true

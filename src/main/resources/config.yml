@@ -1,0 +1,19 @@
+i18n: zh_cn
+wands:
+  "&fPlantingWand":
+    range: 5
+    plant: WHEAT
+    permission: "plantingwand.example"
+    message: "&a您已快速种植 &e%amount% 个%item%"
+    cooldown: 10
+    #actionbar / chat
+    messagetype: actionbar
+boosters:
+  "&cPlantBooster":
+    range: 5
+    plant: WHEAT
+    permission: "plantingwand.example"
+    message: "&a您已使 &e%amount% 个%item% &a快速成长"
+    cooldown: 30
+    #actionbar / chat
+    messagetype: actionbar
