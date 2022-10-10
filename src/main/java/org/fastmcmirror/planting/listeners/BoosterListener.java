@@ -51,14 +51,23 @@ public class BoosterListener implements Listener {
     public void onRightClick(PlayerInteractEvent event) {
         if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
         Player player = event.getPlayer();
+        String display = null;
         ItemStack item = player.getItemInHand();
         if (!item.hasItemMeta()) return;
         ItemMeta meta = item.getItemMeta();
-        if (!meta.hasDisplayName()) return;
-        String display = meta.getDisplayName().replace("§", "&");
+        if (PlantingWand.instance.getConfig().getBoolean("nbtmode")) {
+            for (String tag : PlantingWand.nbtManager.getWands(item)) {
+                if (!PlantingWand.boosters.containsKey(tag)) continue;
+                display = tag;
+            }
+            if (display == null) return;
+        } else {
+            if (!meta.hasDisplayName()) return;
+            display = meta.getDisplayName().replace("§", "&");
+        }
         if (!PlantingWand.boosters.containsKey(display)) return;
         Location location = event.getClickedBlock().getLocation();
-        if (location.getBlockY()>=256) return;
+        if (location.getBlockY() >= 256) return;
         Wand wand = PlantingWand.boosters.get(display);
         if (!event.getClickedBlock().getType().equals(wand.plant)) return;
         if (wand.cooldown != 0L) {

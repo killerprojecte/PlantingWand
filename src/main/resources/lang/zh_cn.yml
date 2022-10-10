@@ -9,4 +9,12 @@ command:
   help:
     reload: "重载配置"
     list: "查看所有魔杖"
+    add: "添加NBT魔杖"
+    show: "显示所有物品已安装的魔杖属性"
+  add:
+    unavailable: "&cNBTMode不可用"
+    unknow-wand: "&c该魔杖不存在"
+    success: "&a成功将魔杖属性添加到物品中"
+    show: "&e&l已添加的魔杖属性:"
+  show: "&e&l所有已安装的魔杖属性:"
 cooldown: "&c您还需要等待 &e%cooldown%秒 &c才能使用此魔杖!"

@@ -12,6 +12,7 @@ import org.fastmcmirror.planting.command.PlantCommand;
 import org.fastmcmirror.planting.listeners.BoosterListener;
 import org.fastmcmirror.planting.listeners.LevelUpListener;
 import org.fastmcmirror.planting.listeners.PlantListener;
+import org.fastmcmirror.planting.nms.*;
 import org.fastmcmirror.planting.utils.Lang;
 import org.fastmcmirror.planting.utils.MessageType;
 
@@ -28,6 +29,7 @@ public final class PlantingWand extends JavaPlugin {
     public static Map<String, Wand> levelup;
     public static InternationalizationAPI iapi;
     public static Lang lang;
+    public static NbtManager nbtManager;
 
     @Override
     public void onEnable() {
@@ -62,15 +64,73 @@ public final class PlantingWand extends JavaPlugin {
                 "Version: " + getDescription().getVersion() + "\n" +
                 "MC-Version: " + getMinecraftVersion(Bukkit.getBukkitVersion()) + "\n" +
                 "InternationalizationAPI-Language: " + MinecraftLanguage.valueOf(getConfig().getString("i18n")).toString().toUpperCase());
+        setupNbtManager();
         // Plugin startup logic
 
     }
 
-    public void reloadWands(){
+    public void setupNbtManager() {
+        String version = Bukkit.getServer().getClass().getPackage()
+                .getName().replace("org.bukkit.craftbukkit.", "");
+        getLogger().info("[PlantingWand] Loading NMSManager...");
+        switch (version) {
+            case "v1_13_R1": {
+                nbtManager = new NMS_1_13_R1();
+                break;
+            }
+            case "v1_13_R2": {
+                nbtManager = new NMS_1_13_R2();
+                break;
+            }
+            case "v1_14_R1": {
+                nbtManager = new NMS_1_14_R1();
+                break;
+            }
+            case "v1_15_R1": {
+                nbtManager = new NMS_1_15_R1();
+                break;
+            }
+            case "v1_16_R1": {
+                nbtManager = new NMS_1_16_R1();
+                break;
+            }
+            case "v1_16_R2": {
+                nbtManager = new NMS_1_16_R2();
+                break;
+            }
+            case "v1_16_R3": {
+                nbtManager = new NMS_1_16_R3();
+                break;
+            }
+            case "v1_17_R1": {
+                nbtManager = new NMS_1_17_R1();
+                break;
+            }
+            case "v1_18_R1": {
+                nbtManager = new NMS_1_18_R1();
+                break;
+            }
+            case "v1_18_R2": {
+                nbtManager = new NMS_1_18_R2();
+                break;
+            }
+            case "v1_19_R1": {
+                nbtManager = new NMS_1_19_R1();
+                break;
+            }
+            default: {
+                getLogger().severe("[PlantingWand] Unsupport Version: " + version);
+                setEnabled(false);
+                break;
+            }
+        }
+    }
+
+    public void reloadWands() {
         reloadConfig();
         wands = new HashMap<>();
-        for (String name : getConfig().getConfigurationSection("wands").getKeys(false)){
-            wands.put(name,new Wand(
+        for (String name : getConfig().getConfigurationSection("wands").getKeys(false)) {
+            wands.put(name, new Wand(
                     getConfig().getInt("wands." + name + ".range"),
                     Material.getMaterial(getConfig().getString("wands." + name + ".plant").toUpperCase()),
                     getConfig().getString("wands." + name + ".permission"),
@@ -150,6 +210,12 @@ public final class PlantingWand extends JavaPlugin {
                 configuration.getString("command.list.info"),
                 configuration.getString("command.help.reload"),
                 configuration.getString("command.help.list"),
-                configuration.getString("cooldown"));
+                configuration.getString("cooldown"),
+                configuration.getString("command.help.add"),
+                configuration.getString("command.add.unavailable"),
+                configuration.getString("command.add.unknow-wand"),
+                configuration.getString("command.add.success"),
+                configuration.getString("command.show"),
+                configuration.getString("command.help.show"));
     }
 }
