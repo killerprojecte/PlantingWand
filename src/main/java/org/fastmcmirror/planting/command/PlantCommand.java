@@ -11,30 +11,41 @@ import org.fastmcmirror.planting.Wand;
 import org.fastmcmirror.planting.utils.Color;
 
 public class PlantCommand implements CommandExecutor {
+    private static void sendHelp(CommandSender sender) {
+        sender.sendMessage(Color.color("&e&lPlantingWand &aby FastMCMirror"));
+        sender.sendMessage(Color.color("&7/plantingwand reload ———— " + PlantingWand.lang.command_help_reload));
+        sender.sendMessage(Color.color("&7/plantingwand list ———— " + PlantingWand.lang.command_help_list));
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("plantingwand.admin")) return false;
-        if (args.length==1){
-            if (args[0].equals("reload")){
+        if (args.length == 1) {
+            if (args[0].equals("reload")) {
+                PlantingWand.instance.reloadLang();
                 PlantingWand.instance.reloadWands();
                 PlantingWand.instance.reloadBoosters();
-                Bukkit.getScheduler().runTaskAsynchronously(PlantingWand.instance,() -> {
+                PlantingWand.instance.reloadLevelUpWands();
+                Bukkit.getScheduler().runTaskAsynchronously(PlantingWand.instance, () -> {
                     PlantingWand.iapi = new InternationalizationAPI(PlantingWand.getMinecraftVersion(Bukkit.getBukkitVersion()), MinecraftLanguage.valueOf(PlantingWand.instance.getConfig().getString("i18n")), PlantingWand.instance.getDataFolder() + "/i18n/");
                 });
-                sender.sendMessage(Color.color("&a配置已重载!"));
-            } else if (args[0].equals("list")){
-                sender.sendMessage(Color.color("&c&l魔杖列表: "));
-                sender.sendMessage(Color.color("&a&l种植魔杖:"));
-                for (String key : PlantingWand.wands.keySet()){
+                sender.sendMessage(Color.color(PlantingWand.lang.command_reload));
+            } else if (args[0].equals("list")) {
+                sender.sendMessage(Color.color(PlantingWand.lang.command_list_wandlist));
+                sender.sendMessage(Color.color(PlantingWand.lang.command_list_plantingwand));
+                for (String key : PlantingWand.wands.keySet()) {
                     Wand wand = PlantingWand.wands.get(key);
-                    sender.sendMessage(Color.color("&e物品名称: &r" + key + " &e范围: &f" + wand.range + " &e权限: &f" + wand.permission + " &e种植物: &f" + PlantingWand.iapi.getItemName(wand.plant.toString())
-                    + " &e替换信息: &r" + wand.message + " &e消息类型: " + wand.messageType.toString()));
+                    sender.sendMessage(Color.color(PlantingWand.lang.command_list_info.replace("%key%", key).replace("%range%", String.valueOf(wand.range)).replace("%permission%", wand.permission).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%message%", wand.message.replace("%amount%", "1").replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString()))).replace("%message_type%", wand.messageType.toString())));
                 }
-                sender.sendMessage(Color.color("&e&l生长魔杖:"));
-                for (String key : PlantingWand.boosters.keySet()){
+                sender.sendMessage(Color.color(PlantingWand.lang.command_list_boosterwand));
+                for (String key : PlantingWand.boosters.keySet()) {
                     Wand wand = PlantingWand.boosters.get(key);
-                    sender.sendMessage(Color.color("&e物品名称: &r" + key + " &e范围: &f" + wand.range + " &e权限: &f" + wand.permission + " &e种植物: &f" + PlantingWand.iapi.getItemName(wand.plant.toString())
-                            + " &e替换信息: &r" + wand.message + " &e消息类型: " + wand.messageType.toString()));
+                    sender.sendMessage(Color.color(PlantingWand.lang.command_list_info.replace("%key%", key).replace("%range%", String.valueOf(wand.range)).replace("%permission%", wand.permission).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%message%", wand.message.replace("%amount%", "1").replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString()))).replace("%message_type%", wand.messageType.toString())));
+                }
+                sender.sendMessage(Color.color(PlantingWand.lang.command_list_levelupwand));
+                for (String key : PlantingWand.levelup.keySet()) {
+                    Wand wand = PlantingWand.levelup.get(key);
+                    sender.sendMessage(Color.color(PlantingWand.lang.command_list_info.replace("%key%", key).replace("%range%", String.valueOf(wand.range)).replace("%permission%", wand.permission).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%message%", wand.message.replace("%amount%", "1").replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString()))).replace("%message_type%", wand.messageType.toString())));
                 }
             } else {
                 sendHelp(sender);
@@ -43,11 +54,5 @@ public class PlantCommand implements CommandExecutor {
             sendHelp(sender);
         }
         return false;
-    }
-
-    private static void sendHelp(CommandSender sender){
-        sender.sendMessage(Color.color("&e&lPlantingWand &aby FastMCMirror"));
-        sender.sendMessage(Color.color("&7/plantingwand reload ———— 重载配置"));
-        sender.sendMessage(Color.color("&7/plantingwand list ———— 查看所有魔杖"));
     }
 }

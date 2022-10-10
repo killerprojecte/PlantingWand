@@ -1,0 +1,12 @@
+command:
+  reload: "&aThe configuration file has been reloaded"
+  list:
+    wandlist: "&c&lWands: "
+    plantingwand: "&a&lPlanting Wands:"
+    boosterwand: "&e&lPlant Boosters:"
+    levelupwand: "&b&lPlant LevelUp Wands:"
+    info: "&eWand Name: &r%key% &eRange: &f%range% &ePermission: &f%permission% &ePlant: &f%item% &eMessage: &r%message% &eMessage Type: %message_type%"
+  help:
+    reload: "Reload configuration"
+    list: "Show all available wands"
+cooldown: "&cYour need to wait &e%cooldown% sec &cto use this wand!"

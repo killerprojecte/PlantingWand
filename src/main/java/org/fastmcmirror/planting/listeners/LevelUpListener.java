@@ -21,8 +21,8 @@ import org.fastmcmirror.planting.utils.Color;
 import org.fastmcmirror.planting.utils.MessageType;
 import org.fastmcmirror.planting.utils.ParticleUtil;
 
-public class BoosterListener implements Listener {
-    private static long boostPlants(Location location, Wand wand) {
+public class LevelUpListener implements Listener {
+    private static long levelupPlants(Location location, Wand wand) {
         int range = wand.range;
         long amount = 0L;
         for (int x = location.getBlockX() - range; x <= location.getBlockX() + range; x++) {
@@ -34,7 +34,41 @@ public class BoosterListener implements Listener {
                 Crops crops = (Crops) state.getData();
                 if (crops.getState().equals(CropState.RIPE)) continue;
                 Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
-                    crops.setState(CropState.RIPE);
+                    CropState cropState = CropState.SEEDED;
+                    switch (crops.getState()) {
+                        case SEEDED: {
+                            cropState = CropState.GERMINATED;
+                            break;
+                        }
+                        case GERMINATED: {
+                            cropState = CropState.VERY_SMALL;
+                            break;
+                        }
+                        case VERY_SMALL: {
+                            cropState = CropState.SMALL;
+                            break;
+                        }
+                        case SMALL: {
+                            cropState = CropState.MEDIUM;
+                            break;
+                        }
+                        case MEDIUM: {
+                            cropState = CropState.TALL;
+                            break;
+                        }
+                        case TALL: {
+                            cropState = CropState.VERY_TALL;
+                            break;
+                        }
+                        case VERY_TALL: {
+                            cropState = CropState.RIPE;
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                    crops.setState(cropState);
                     state.setData(crops);
                     state.update();
                     if (wand.particle) {
@@ -56,10 +90,10 @@ public class BoosterListener implements Listener {
         ItemMeta meta = item.getItemMeta();
         if (!meta.hasDisplayName()) return;
         String display = meta.getDisplayName().replace("§", "&");
-        if (!PlantingWand.boosters.containsKey(display)) return;
+        if (!PlantingWand.levelup.containsKey(display)) return;
         Location location = event.getClickedBlock().getLocation();
-        if (location.getBlockY()>=256) return;
-        Wand wand = PlantingWand.boosters.get(display);
+        if (location.getBlockY() >= 256) return;
+        Wand wand = PlantingWand.levelup.get(display);
         if (!event.getClickedBlock().getType().equals(wand.plant)) return;
         if (wand.cooldown != 0L) {
             if (wand.cooldowns.containsKey(player.getUniqueId())) {
@@ -75,7 +109,7 @@ public class BoosterListener implements Listener {
             item.setAmount(item.getAmount() - 1);
         }
         Bukkit.getScheduler().runTaskAsynchronously(PlantingWand.instance, () -> {
-            long amount = boostPlants(location, wand);
+            long amount = levelupPlants(location, wand);
             if (wand.messageType.equals(MessageType.ACTIONBAR)) {
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())))));
             } else {

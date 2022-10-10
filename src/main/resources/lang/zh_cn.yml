@@ -1,0 +1,12 @@
+command:
+  reload: "&a配置已重载!"
+  list:
+    wandlist: "&c&l魔杖列表: "
+    plantingwand: "&a&l种植魔杖:"
+    boosterwand: "&e&l生长魔杖:"
+    levelupwand: "&b&l植物升级魔杖:"
+    info: "&e物品名称: &r%key% &e范围: &f%range% &e权限: &f%permission% &e种植物: &f%item% &e替换信息: &r%message% &e消息类型: %message_type%"
+  help:
+    reload: "重载配置"
+    list: "查看所有魔杖"
+cooldown: "&c您还需要等待 &e%cooldown%秒 &c才能使用此魔杖!"
