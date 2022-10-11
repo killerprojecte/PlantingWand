@@ -20,12 +20,21 @@ repositories {
         name = 'FastMCMirror Repo'
         url = 'https://repo.fastmcmirror.org/content/repositories/releases/'
     }
+    maven {
+        url = 'https://jitpack.io/'
+    }
+    maven {
+        url = 'https://repo.codemc.org/repository/maven-public/'
+    }
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
     implementation 'org.fastmcmirror:InternationalizationAPI:1.0.0'
     implementation 'com.google.code.gson:gson:2.9.0'
+    compileOnly 'com.github.LoneDev6:api-itemsadder:3.0.0'
+    compileOnly 'dev.linwood:ItemMods:2.0.0-alpha.1'
+    compileOnly 'com.github.oraxen:oraxen:-SNAPSHOT'
     dl('1.13')
     dl('1.13.1')
     dl('1.13.2')

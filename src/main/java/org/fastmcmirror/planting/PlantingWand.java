@@ -12,6 +12,9 @@ import org.fastmcmirror.planting.command.PlantCommand;
 import org.fastmcmirror.planting.listeners.BoosterListener;
 import org.fastmcmirror.planting.listeners.LevelUpListener;
 import org.fastmcmirror.planting.listeners.PlantListener;
+import org.fastmcmirror.planting.model.ItemModsModel;
+import org.fastmcmirror.planting.model.ItemsAdderModel;
+import org.fastmcmirror.planting.model.SimpleModel;
 import org.fastmcmirror.planting.nms.*;
 import org.fastmcmirror.planting.utils.Lang;
 import org.fastmcmirror.planting.utils.MessageType;
@@ -30,6 +33,7 @@ public final class PlantingWand extends JavaPlugin {
     public static InternationalizationAPI iapi;
     public static Lang lang;
     public static NbtManager nbtManager;
+    public static SimpleModel modelEngine;
 
     @Override
     public void onEnable() {
@@ -65,6 +69,25 @@ public final class PlantingWand extends JavaPlugin {
                 "MC-Version: " + getMinecraftVersion(Bukkit.getBukkitVersion()) + "\n" +
                 "InternationalizationAPI-Language: " + MinecraftLanguage.valueOf(getConfig().getString("i18n")).toString().toUpperCase());
         setupNbtManager();
+        switch (getConfig().getString("model").toLowerCase()) {
+            case "itemsadder": {
+                modelEngine = new ItemsAdderModel();
+                break;
+            }
+            case "itemmods": {
+                modelEngine = new ItemModsModel();
+                break;
+            }
+            case "none": {
+                modelEngine = null;
+                break;
+            }
+            default: {
+                getLogger().warning("Unknown Model-Engine: " + getConfig().getString("model"));
+                modelEngine = null;
+                break;
+            }
+        }
         // Plugin startup logic
 
     }
@@ -139,7 +162,9 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getLong("wands." + name + ".cooldown"),
                     getConfig().getBoolean("wands." + name + ".disposable"),
                     getConfig().getBoolean("wands." + name + ".particle"),
-                    Particle.valueOf(getConfig().getString("wands." + name + ".particletype").toUpperCase())
+                    Particle.valueOf(getConfig().getString("wands." + name + ".particletype").toUpperCase()),
+                    getConfig().getBoolean("wands." + name + ".model"),
+                    getConfig().getString("wands." + name + ".modelid")
             ));
         }
     }
@@ -157,7 +182,9 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getLong("boosters." + name + ".cooldown"),
                     getConfig().getBoolean("boosters." + name + ".disposable"),
                     getConfig().getBoolean("boosters." + name + ".particle"),
-                    Particle.valueOf(getConfig().getString("boosters." + name + ".particletype").toUpperCase())
+                    Particle.valueOf(getConfig().getString("boosters." + name + ".particletype").toUpperCase()),
+                    getConfig().getBoolean("boosters." + name + ".model"),
+                    getConfig().getString("boosters." + name + ".modelid")
             ));
         }
     }
@@ -175,7 +202,9 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getLong("levelup." + name + ".cooldown"),
                     getConfig().getBoolean("levelup." + name + ".disposable"),
                     getConfig().getBoolean("levelup." + name + ".particle"),
-                    Particle.valueOf(getConfig().getString("levelup." + name + ".particletype").toUpperCase())
+                    Particle.valueOf(getConfig().getString("levelup." + name + ".particletype").toUpperCase()),
+                    getConfig().getBoolean("levelup." + name + ".model"),
+                    getConfig().getString("leveup." + name + ".modelid")
             ));
         }
     }

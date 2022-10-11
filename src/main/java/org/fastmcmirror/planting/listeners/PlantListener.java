@@ -19,7 +19,7 @@ import org.fastmcmirror.planting.utils.MessageType;
 import org.fastmcmirror.planting.utils.ParticleUtil;
 
 public class PlantListener implements Listener {
-    private static long plantBlocks(Location location, Wand wand) {
+    private static long plantBlocks(Location location, Wand wand, Player player) {
         int range = wand.range;
         Material plant = wand.plant;
         long amount = 0L;
@@ -30,7 +30,11 @@ public class PlantListener implements Listener {
                 Location location1 = new Location(location.getWorld(), x, location.getBlockY() + 1, z);
                 if (!location.getWorld().getBlockAt(location1).getType().equals(Material.AIR)) continue;
                 Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
-                    location.getWorld().getBlockAt(location1).setType(plant);
+                    if (wand.model && PlantingWand.modelEngine != null) {
+                        PlantingWand.modelEngine.placeModelBlock(location1, wand.modelid, player);
+                    } else {
+                        location.getWorld().getBlockAt(location1).setType(plant);
+                    }
                     if (wand.particle) {
                         ParticleUtil.playParticle(wand.particleType, location.getWorld().getBlockAt(location1));
                     }
@@ -79,7 +83,7 @@ public class PlantListener implements Listener {
             item.setAmount(item.getAmount() - 1);
         }
         Bukkit.getScheduler().runTaskAsynchronously(PlantingWand.instance, () -> {
-            long amount = plantBlocks(location, wand);
+            long amount = plantBlocks(location, wand, player);
             if (wand.messageType.equals(MessageType.ACTIONBAR)) {
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())))));
             } else {

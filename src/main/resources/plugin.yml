@@ -4,6 +4,9 @@ main: org.fastmcmirror.planting.PlantingWand
 api-version: 1.13
 authors: [ FlyProject ]
 description: Quick seeding with PlantingWand
+softdepend:
+  - ItemsAdder
+  - ItemMods
 commands:
   plantingwand:
     permission: plantingwand.admin

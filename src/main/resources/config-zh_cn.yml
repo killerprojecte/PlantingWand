@@ -1,5 +1,7 @@
 i18n: zh_cn
 nbtmode: false
+#itemsadder / itemmods / none
+model: none
 wands:
   "&fPlantingWand":
     range: 5
@@ -12,6 +14,8 @@ wands:
     disposable: false
     particle: false
     particletype: VILLAGER_HAPPY
+    model: false
+    modelid: unknow
 boosters:
   "&cPlantBooster":
     range: 5
@@ -24,6 +28,8 @@ boosters:
     disposable: false
     particle: true
     particletype: VILLAGER_HAPPY
+    model: false
+    modelid: unknow
 levelup:
   "&aPlantLevelUp":
     range: 5
@@ -36,3 +42,5 @@ levelup:
     disposable: false
     particle: true
     particletype: VILLAGER_HAPPY
+    model: false
+    modelid: unknow
