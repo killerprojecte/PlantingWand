@@ -23,7 +23,7 @@ public class NMS_1_19_R1 extends NbtManager {
         }
         List<String> list = new ArrayList<>();
         try {
-            if ((boolean) nbt.getClass().getMethod("k", String.class).invoke(nbt, "PlantingWand")) {
+            if ((boolean) nbt.getClass().getMethod("e", String.class).invoke(nbt, "PlantingWand")) {
                 NBTTagList nlist = (NBTTagList) nbt.getClass().getMethod("c", String.class, int.class).invoke(nbt, "PlantingWand", 8);
                 for (NBTBase n : nlist) {
                     list.add((String) n.getClass().getMethod("e_").invoke(n));
@@ -46,7 +46,7 @@ public class NMS_1_19_R1 extends NbtManager {
         }
         NBTTagList nlist;
         try {
-            if ((boolean) nbt.getClass().getMethod("k", String.class).invoke(nbt, "PlantingWand")) {
+            if ((boolean) nbt.getClass().getMethod("e", String.class).invoke(nbt, "PlantingWand")) {
                 nlist = (NBTTagList) nbt.getClass().getMethod("c", String.class, int.class).invoke(nbt, "PlantingWand", 8);
                 nlist.add(NBTTagString.a(buff));
             } else {
@@ -73,7 +73,7 @@ public class NMS_1_19_R1 extends NbtManager {
         NBTTagList nlist;
         NBTTagList list = new NBTTagList();
         try {
-            if ((boolean) nbt.getClass().getMethod("k", String.class).invoke(nbt, "PlantingWand")) {
+            if ((boolean) nbt.getClass().getMethod("e", String.class).invoke(nbt, "PlantingWand")) {
                 nlist = (NBTTagList) nbt.getClass().getMethod("c", String.class, int.class).invoke(nbt, "PlantingWand", 8);
                 for (int s = 0; s < nlist.size(); s++) {
                     String str = (String) nlist.getClass().getMethod("j", int.class).invoke(nlist, s);

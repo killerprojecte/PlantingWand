@@ -164,7 +164,8 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getBoolean("wands." + name + ".particle"),
                     Particle.valueOf(getConfig().getString("wands." + name + ".particletype").toUpperCase()),
                     getConfig().getBoolean("wands." + name + ".model"),
-                    getConfig().getString("wands." + name + ".modelid")
+                    getConfig().getString("wands." + name + ".modelid"),
+                    Material.getMaterial(getConfig().getString("wands." + name + ".farmblock", "FARMLAND"))
             ));
         }
     }
@@ -183,8 +184,9 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getBoolean("boosters." + name + ".disposable"),
                     getConfig().getBoolean("boosters." + name + ".particle"),
                     Particle.valueOf(getConfig().getString("boosters." + name + ".particletype").toUpperCase()),
-                    getConfig().getBoolean("boosters." + name + ".model"),
-                    getConfig().getString("boosters." + name + ".modelid")
+                    getConfig().getBoolean("boosters." + name + ".model", false),
+                    getConfig().getString("boosters." + name + ".modelid", "unknow"),
+                    Material.getMaterial(getConfig().getString("boosters." + name + ".farmblock", "FARMLAND"))
             ));
         }
     }
@@ -203,8 +205,9 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getBoolean("levelup." + name + ".disposable"),
                     getConfig().getBoolean("levelup." + name + ".particle"),
                     Particle.valueOf(getConfig().getString("levelup." + name + ".particletype").toUpperCase()),
-                    getConfig().getBoolean("levelup." + name + ".model"),
-                    getConfig().getString("leveup." + name + ".modelid")
+                    getConfig().getBoolean("levelup." + name + ".model", false),
+                    getConfig().getString("levelup." + name + ".modelid", "unknow"),
+                    Material.getMaterial(getConfig().getString("levelup." + name + ".farmblock", "FARMLAND"))
             ));
         }
     }

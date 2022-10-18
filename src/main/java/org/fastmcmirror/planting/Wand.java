@@ -22,9 +22,10 @@ public class Wand {
     public Particle particleType;
     public boolean model;
     public String modelid;
+    public Material farmblock;
 
     public Wand(int range, Material plant, String permission, String message, MessageType messageType, long cooldown, boolean disposable, boolean particle, Particle particleType
-            , boolean model, String modelid) {
+            , boolean model, String modelid, Material farmblock) {
         this.range = range;
         this.plant = plant;
         this.permission = permission;
@@ -37,5 +38,6 @@ public class Wand {
         this.particleType = particleType;
         this.model = model;
         this.modelid = modelid;
+        this.farmblock = farmblock;
     }
 }

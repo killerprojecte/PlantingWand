@@ -5,6 +5,7 @@ model: none
 wands:
   "&fPlantingWand":
     range: 5
+    farmblock: FARMLAND
     plant: WHEAT
     permission: "plantingwand.example"
     message: "&aYou planted &e%amount% &agrains of &f&l%item%"
@@ -28,8 +29,6 @@ boosters:
     disposable: false
     particle: true
     particletype: VILLAGER_HAPPY
-    model: false
-    modelid: unknow
 levelup:
   "&aPlantLevelUp":
     range: 5
@@ -42,5 +41,3 @@ levelup:
     disposable: false
     particle: true
     particletype: VILLAGER_HAPPY
-    model: false
-    modelid: unknow
