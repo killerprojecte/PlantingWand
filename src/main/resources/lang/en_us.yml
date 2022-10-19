@@ -17,3 +17,5 @@ command:
     success: "&aSuccessfully added wand attribute to item"
   show: "&e&lAvailable Wands in Item:"
 cooldown: "&cYour need to wait &e%cooldown% sec &cto use this wand!"
+unknow-payment: "&cUnknown payment method"
+not-enough: "&c余额不足 无法继续操作"

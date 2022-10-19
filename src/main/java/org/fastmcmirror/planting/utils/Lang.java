@@ -16,6 +16,8 @@ public class Lang {
     public final String command_add_success;
     public final String command_show;
     public final String command_help_show;
+    public final String unknow_payment;
+    public final String not_enough;
 
     public Lang(String command_reload,
                 String command_list_wandlist,
@@ -31,7 +33,9 @@ public class Lang {
                 String command_add_unknow_wand,
                 String command_add_success,
                 String command_show,
-                String command_help_show) {
+                String command_help_show,
+                String unknow_payment,
+                String not_enough) {
         this.command_reload = command_reload;
         this.command_list_wandlist = command_list_wandlist;
         this.command_list_plantingwand = command_list_plantingwand;
@@ -47,5 +51,7 @@ public class Lang {
         this.command_add_success = command_add_success;
         this.command_show = command_show;
         this.command_help_show = command_help_show;
+        this.unknow_payment = unknow_payment;
+        this.not_enough = not_enough;
     }
 }

@@ -9,15 +9,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.fastmcmirror.i18n.InternationalizationAPI;
 import org.fastmcmirror.i18n.MinecraftLanguage;
 import org.fastmcmirror.planting.command.PlantCommand;
+import org.fastmcmirror.planting.economy.NoneEconomy;
+import org.fastmcmirror.planting.economy.PlayerPointsEconomy;
+import org.fastmcmirror.planting.economy.SimpleEconomy;
+import org.fastmcmirror.planting.economy.VaultEconomy;
 import org.fastmcmirror.planting.listeners.BoosterListener;
 import org.fastmcmirror.planting.listeners.LevelUpListener;
 import org.fastmcmirror.planting.listeners.PlantListener;
+import org.fastmcmirror.planting.model.CustomCropsModel;
 import org.fastmcmirror.planting.model.ItemModsModel;
 import org.fastmcmirror.planting.model.ItemsAdderModel;
 import org.fastmcmirror.planting.model.SimpleModel;
 import org.fastmcmirror.planting.nms.*;
 import org.fastmcmirror.planting.utils.Lang;
 import org.fastmcmirror.planting.utils.MessageType;
+import org.fastmcmirror.planting.utils.Payment;
+import org.fastmcmirror.planting.utils.Version;
 
 import java.io.File;
 import java.util.HashMap;
@@ -34,6 +41,7 @@ public final class PlantingWand extends JavaPlugin {
     public static Lang lang;
     public static NbtManager nbtManager;
     public static SimpleModel modelEngine;
+    public static Map<String, SimpleEconomy> economics = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -51,9 +59,7 @@ public final class PlantingWand extends JavaPlugin {
         reloadWands();
         reloadBoosters();
         reloadLevelUpWands();
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-            iapi = new InternationalizationAPI(getMinecraftVersion(Bukkit.getBukkitVersion()), MinecraftLanguage.valueOf(getConfig().getString("i18n")), getDataFolder() + "/i18n/");
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> iapi = new InternationalizationAPI(getMinecraftVersion(Bukkit.getBukkitVersion()), MinecraftLanguage.valueOf(getConfig().getString("i18n")), getDataFolder() + "/i18n/"));
         getCommand("plantingwand").setExecutor(new PlantCommand());
         printLogo("                                          \n" +
                 "──────────────────────────────────────────\n" +
@@ -69,6 +75,7 @@ public final class PlantingWand extends JavaPlugin {
                 "MC-Version: " + getMinecraftVersion(Bukkit.getBukkitVersion()) + "\n" +
                 "InternationalizationAPI-Language: " + MinecraftLanguage.valueOf(getConfig().getString("i18n")).toString().toUpperCase());
         setupNbtManager();
+        setupEconomics();
         switch (getConfig().getString("model").toLowerCase()) {
             case "itemsadder": {
                 modelEngine = new ItemsAdderModel();
@@ -76,6 +83,10 @@ public final class PlantingWand extends JavaPlugin {
             }
             case "itemmods": {
                 modelEngine = new ItemModsModel();
+                break;
+            }
+            case "customcrops": {
+                modelEngine = new CustomCropsModel();
                 break;
             }
             case "none": {
@@ -88,8 +99,25 @@ public final class PlantingWand extends JavaPlugin {
                 break;
             }
         }
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this, Version::checkUpdate, 20L * 60L * 3L);
         // Plugin startup logic
 
+    }
+
+    public void setupEconomics() {
+        int amount = 0;
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+            getLogger().info("Vault found. loading this module...");
+            economics.put("vault", VaultEconomy.setup());
+            amount++;
+        }
+        if (Bukkit.getPluginManager().getPlugin("PlayerPoints") != null) {
+            getLogger().info("PlayerPoints found. loading this module...");
+            economics.put("playerpoints", PlayerPointsEconomy.setup());
+            amount++;
+        }
+        economics.put("none", new NoneEconomy());
+        getLogger().info("All economic modules loaded. Successfully loaded into " + amount + " economic expansion");
     }
 
     public void setupNbtManager() {
@@ -165,7 +193,9 @@ public final class PlantingWand extends JavaPlugin {
                     Particle.valueOf(getConfig().getString("wands." + name + ".particletype").toUpperCase()),
                     getConfig().getBoolean("wands." + name + ".model"),
                     getConfig().getString("wands." + name + ".modelid"),
-                    Material.getMaterial(getConfig().getString("wands." + name + ".farmblock", "FARMLAND"))
+                    Material.getMaterial(getConfig().getString("wands." + name + ".farmblock", "FARMLAND")),
+                    new Payment(getConfig().getString("wands." + name + ".payment.type").toLowerCase(),
+                            getConfig().getDouble("wands." + name + ".payment.count"))
             ));
         }
     }
@@ -186,7 +216,9 @@ public final class PlantingWand extends JavaPlugin {
                     Particle.valueOf(getConfig().getString("boosters." + name + ".particletype").toUpperCase()),
                     getConfig().getBoolean("boosters." + name + ".model", false),
                     getConfig().getString("boosters." + name + ".modelid", "unknow"),
-                    Material.getMaterial(getConfig().getString("boosters." + name + ".farmblock", "FARMLAND"))
+                    Material.getMaterial(getConfig().getString("boosters." + name + ".farmblock", "FARMLAND")),
+                    new Payment(getConfig().getString("boosters." + name + ".payment.type").toLowerCase(),
+                            getConfig().getDouble("boosters." + name + ".payment.count"))
             ));
         }
     }
@@ -207,7 +239,9 @@ public final class PlantingWand extends JavaPlugin {
                     Particle.valueOf(getConfig().getString("levelup." + name + ".particletype").toUpperCase()),
                     getConfig().getBoolean("levelup." + name + ".model", false),
                     getConfig().getString("levelup." + name + ".modelid", "unknow"),
-                    Material.getMaterial(getConfig().getString("levelup." + name + ".farmblock", "FARMLAND"))
+                    Material.getMaterial(getConfig().getString("levelup." + name + ".farmblock", "FARMLAND")),
+                    new Payment(getConfig().getString("levelup." + name + ".payment.type").toLowerCase(),
+                            getConfig().getDouble("levelup." + name + ".payment.count"))
             ));
         }
     }
@@ -248,6 +282,8 @@ public final class PlantingWand extends JavaPlugin {
                 configuration.getString("command.add.unknow-wand"),
                 configuration.getString("command.add.success"),
                 configuration.getString("command.show"),
-                configuration.getString("command.help.show"));
+                configuration.getString("command.help.show"),
+                configuration.getString("unknow-payment"),
+                configuration.getString("not-enough"));
     }
 }

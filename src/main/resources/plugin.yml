@@ -7,6 +7,9 @@ description: Quick seeding with PlantingWand
 softdepend:
   - ItemsAdder
   - ItemMods
+  - Vault
+  - PlayerPoints
+  - CustomCrops
 commands:
   plantingwand:
     permission: plantingwand.admin

@@ -22,9 +22,14 @@ import org.fastmcmirror.planting.utils.MessageType;
 import org.fastmcmirror.planting.utils.ParticleUtil;
 
 public class BoosterListener implements Listener {
-    private static long boostPlants(Location location, Wand wand) {
+    private static long boostPlants(Location location, Wand wand, Player player) {
         int range = wand.range;
         long amount = 0L;
+        if (!PlantingWand.economics.containsKey(wand.payment.type)) {
+            player.sendMessage(Color.color(PlantingWand.lang.unknow_payment));
+            return 0L;
+        }
+        all:
         for (int x = location.getBlockX() - range; x <= location.getBlockX() + range; x++) {
             for (int z = (int) (location.getBlockZ() - range); z <= location.getBlockZ() + range; z++) {
                 Location location1 = new Location(location.getWorld(), x, location.getBlockY(), z);
@@ -33,6 +38,10 @@ public class BoosterListener implements Listener {
                 BlockState state = block.getState();
                 Crops crops = (Crops) state.getData();
                 if (crops.getState().equals(CropState.RIPE)) continue;
+                if (!PlantingWand.economics.get(wand.payment.type).has(player, wand.payment.count)) {
+                    player.sendMessage(Color.color(PlantingWand.lang.not_enough));
+                    break all;
+                }
                 Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
                     crops.setState(CropState.RIPE);
                     state.setData(crops);
@@ -44,6 +53,8 @@ public class BoosterListener implements Listener {
                 amount++;
             }
         }
+        long finalAmount = amount;
+        Bukkit.getScheduler().runTask(PlantingWand.instance, () -> PlantingWand.economics.get(wand.payment.type).takeMoney(player, wand.payment.count * finalAmount));
         return amount;
     }
 
@@ -84,11 +95,11 @@ public class BoosterListener implements Listener {
             item.setAmount(item.getAmount() - 1);
         }
         Bukkit.getScheduler().runTaskAsynchronously(PlantingWand.instance, () -> {
-            long amount = boostPlants(location, wand);
+            long amount = boostPlants(location, wand, player);
             if (wand.messageType.equals(MessageType.ACTIONBAR)) {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())))));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%count%", String.valueOf(amount * wand.payment.count)))));
             } else {
-                player.sendMessage(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString()))));
+                player.sendMessage(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%count%", String.valueOf(amount * wand.payment.count))));
             }
             if (wand.cooldown != 0L) {
                 wand.cooldowns.put(player.getUniqueId(), wand.cooldown);

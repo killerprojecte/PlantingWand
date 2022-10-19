@@ -3,6 +3,7 @@ package org.fastmcmirror.planting;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.fastmcmirror.planting.utils.MessageType;
+import org.fastmcmirror.planting.utils.Payment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +24,11 @@ public class Wand {
     public boolean model;
     public String modelid;
     public Material farmblock;
+    public Payment payment;
 
     public Wand(int range, Material plant, String permission, String message, MessageType messageType, long cooldown, boolean disposable, boolean particle, Particle particleType
-            , boolean model, String modelid, Material farmblock) {
+            , boolean model, String modelid, Material farmblock,
+                Payment payment) {
         this.range = range;
         this.plant = plant;
         this.permission = permission;
@@ -39,5 +42,6 @@ public class Wand {
         this.model = model;
         this.modelid = modelid;
         this.farmblock = farmblock;
+        this.payment = payment;
     }
 }

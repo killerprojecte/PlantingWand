@@ -1,6 +1,6 @@
 i18n: en_us
 nbtmode: false
-#itemsadder / itemmods / none
+#itemsadder / itemmods / customcrops / none
 model: none
 wands:
   "&fPlantingWand":
@@ -8,7 +8,7 @@ wands:
     farmblock: FARMLAND
     plant: WHEAT
     permission: "plantingwand.example"
-    message: "&aYou planted &e%amount% &agrains of &f&l%item%"
+    message: "&aYou planted &e%amount% &agrains of &f&l%item% &e| &fPaid %count% Coins"
     cooldown: 10
     #actionbar / chat
     messagetype: actionbar
@@ -17,27 +17,36 @@ wands:
     particletype: VILLAGER_HAPPY
     model: false
     modelid: unknow
+    payment:
+      type: vault
+      count: 1000
 boosters:
   "&cPlantBooster":
     range: 5
     plant: WHEAT
     permission: "plantingwand.example"
-    message: "&aYou let &e%amount% &agrains of &f&l%item% &aripen"
+    message: "&aYou let &e%amount% &agrains of &f&l%item% &aripen &e| &fPaid %count% Coins"
     cooldown: 30
     #actionbar / chat
     messagetype: actionbar
     disposable: false
     particle: true
     particletype: VILLAGER_HAPPY
+    payment:
+      type: vault
+      count: 1000
 levelup:
   "&aPlantLevelUp":
     range: 5
     plant: WHEAT
     permission: "plantingwand.example"
-    message: "&aYou let &e%amount% &agrains of &f&l%item% &alevelup"
+    message: "&aYou let &e%amount% &agrains of &f&l%item% &alevelup &e| &fPaid %count% Coins"
     cooldown: 15
     #actionbar / chat
     messagetype: actionbar
     disposable: false
     particle: true
     particletype: VILLAGER_HAPPY
+    payment:
+      type: vault
+      count: 1000

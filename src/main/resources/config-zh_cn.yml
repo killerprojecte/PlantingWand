@@ -1,6 +1,6 @@
 i18n: zh_cn
 nbtmode: false
-#itemsadder / itemmods / none
+#itemsadder / itemmods / customcrops / none
 model: none
 wands:
   "&fPlantingWand":
@@ -8,7 +8,7 @@ wands:
     farmblock: FARMLAND
     plant: WHEAT
     permission: "plantingwand.example"
-    message: "&a您已快速种植 &e%amount% 个%item%"
+    message: "&a您已快速种植 &e%amount% 个%item% &e| &f花费 %count% 金币"
     cooldown: 10
     #actionbar / chat
     messagetype: actionbar
@@ -17,27 +17,36 @@ wands:
     particletype: VILLAGER_HAPPY
     model: false
     modelid: unknow
+    payment:
+      type: vault
+      count: 1000
 boosters:
   "&cPlantBooster":
     range: 5
     plant: WHEAT
     permission: "plantingwand.example"
-    message: "&a您已使 &e%amount% 个%item% &a快速成长"
+    message: "&a您已使 &e%amount% 个%item% &a快速成长 &e| &f花费 %count% 金币"
     cooldown: 30
     #actionbar / chat
     messagetype: actionbar
     disposable: false
     particle: true
     particletype: VILLAGER_HAPPY
+    payment:
+      type: vault
+      count: 1000
 levelup:
   "&aPlantLevelUp":
     range: 5
     plant: WHEAT
     permission: "plantingwand.example"
-    message: "&a您已使 &e%amount% 个%item% &a提升一级"
+    message: "&a您已使 &e%amount% 个%item% &a提升一级 &e| &f花费 %count% 金币"
     cooldown: 15
     #actionbar / chat
     messagetype: actionbar
     disposable: false
     particle: true
     particletype: VILLAGER_HAPPY
+    payment:
+      type: vault
+      count: 1000

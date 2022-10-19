@@ -18,3 +18,5 @@ command:
     show: "&e&l已添加的魔杖属性:"
   show: "&e&l所有已安装的魔杖属性:"
 cooldown: "&c您还需要等待 &e%cooldown%秒 &c才能使用此魔杖!"
+unknow-payment: "&c未知付款方式"
+not-enough: "&c余额不足 无法继续操作"

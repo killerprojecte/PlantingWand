@@ -23,12 +23,21 @@ public class PlantListener implements Listener {
         int range = wand.range;
         Material plant = wand.plant;
         long amount = 0L;
+        if (!PlantingWand.economics.containsKey(wand.payment.type)) {
+            player.sendMessage(Color.color(PlantingWand.lang.unknow_payment));
+            return 0L;
+        }
+        all:
         for (int x = location.getBlockX() - range; x <= location.getBlockX() + range; x++) {
             for (int z = (int) (location.getBlockZ() - range); z <= location.getBlockZ() + range; z++) {
                 Location under = new Location(location.getWorld(), x, location.getBlockY(), z);
                 if (!location.getWorld().getBlockAt(under).getType().equals(Material.FARMLAND)) continue;
                 Location location1 = new Location(location.getWorld(), x, location.getBlockY() + 1, z);
                 if (!location.getWorld().getBlockAt(location1).getType().equals(Material.AIR)) continue;
+                if (!PlantingWand.economics.get(wand.payment.type).has(player, wand.payment.count)) {
+                    player.sendMessage(Color.color(PlantingWand.lang.not_enough));
+                    break all;
+                }
                 Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
                     if (wand.model && PlantingWand.modelEngine != null) {
                         PlantingWand.modelEngine.placeModelBlock(location1, wand.modelid, player);
@@ -42,6 +51,8 @@ public class PlantListener implements Listener {
                 amount++;
             }
         }
+        long finalAmount = amount;
+        Bukkit.getScheduler().runTask(PlantingWand.instance, () -> PlantingWand.economics.get(wand.payment.type).takeMoney(player, wand.payment.count * finalAmount));
         return amount;
     }
 
@@ -85,9 +96,9 @@ public class PlantListener implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(PlantingWand.instance, () -> {
             long amount = plantBlocks(location, wand, player);
             if (wand.messageType.equals(MessageType.ACTIONBAR)) {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())))));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%count%", String.valueOf(amount * wand.payment.count)))));
             } else {
-                player.sendMessage(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString()))));
+                player.sendMessage(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%count%", String.valueOf(amount * wand.payment.count))));
             }
             if (wand.cooldown != 0L) {
                 wand.cooldowns.put(player.getUniqueId(), wand.cooldown);
