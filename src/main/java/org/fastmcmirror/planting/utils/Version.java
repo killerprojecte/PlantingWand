@@ -12,7 +12,7 @@ public class Version {
         StringBuilder sb = new StringBuilder();
         String str;
         try {
-            URL url = new URL("https://fastmcmirror.org/flybuff-dev.txt");
+            URL url = new URL("https://fastmcmirror.org/plantingwand.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8));
             while ((str = reader.readLine()) != null) {
                 sb.append(str);
