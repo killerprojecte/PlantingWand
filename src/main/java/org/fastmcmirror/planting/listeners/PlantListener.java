@@ -31,7 +31,7 @@ public class PlantListener implements Listener {
         for (int x = location.getBlockX() - range; x <= location.getBlockX() + range; x++) {
             for (int z = (int) (location.getBlockZ() - range); z <= location.getBlockZ() + range; z++) {
                 Location under = new Location(location.getWorld(), x, location.getBlockY(), z);
-                if (!location.getWorld().getBlockAt(under).getType().equals(Material.FARMLAND)) continue;
+                if (!location.getWorld().getBlockAt(under).getType().equals(wand.farmblock)) continue;
                 Location location1 = new Location(location.getWorld(), x, location.getBlockY() + 1, z);
                 if (!location.getWorld().getBlockAt(location1).getType().equals(Material.AIR)) continue;
                 if (!PlantingWand.economics.get(wand.payment.type).has(player, wand.payment.count)) {
@@ -59,7 +59,6 @@ public class PlantListener implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
-        if (!event.getClickedBlock().getType().equals(Material.FARMLAND)) return;
         Player player = event.getPlayer();
         String display = null;
         ItemStack item = player.getItemInHand();
@@ -79,6 +78,7 @@ public class PlantListener implements Listener {
         Location location = event.getClickedBlock().getLocation();
         if (location.getBlockY() >= 256) return;
         Wand wand = PlantingWand.wands.get(display);
+        if (!event.getClickedBlock().getType().equals(wand.farmblock)) return;
         if (!player.hasPermission(wand.permission)) return;
         if (wand.cooldown != 0L) {
             if (wand.cooldowns.containsKey(player.getUniqueId())) {
