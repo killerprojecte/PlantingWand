@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.Crops;
 import org.fastmcmirror.planting.PlantingWand;
 import org.fastmcmirror.planting.Wand;
@@ -36,54 +38,81 @@ public class LevelUpListener implements Listener {
                 if (!location.getWorld().getBlockAt(location1).getType().equals(wand.plant)) continue;
                 Block block = location.getWorld().getBlockAt(location1);
                 BlockState state = block.getState();
-                Crops crops = (Crops) state.getData();
-                if (crops.getState().equals(CropState.RIPE)) continue;
                 if (!PlantingWand.economics.get(wand.payment.type).has(player, wand.payment.count)) {
                     player.sendMessage(Color.color(PlantingWand.lang.not_enough));
                     break all;
                 }
-                Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
-                    CropState cropState = CropState.SEEDED;
-                    switch (crops.getState()) {
-                        case SEEDED: {
-                            cropState = CropState.GERMINATED;
-                            break;
+                if (block.getType().equals(Material.COCOA)) {
+                    CocoaPlant crops = (CocoaPlant) state.getData();
+                    if (crops.getSize().equals(CocoaPlant.CocoaPlantSize.LARGE)) continue;
+                    Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
+                        CocoaPlant.CocoaPlantSize cropState = CocoaPlant.CocoaPlantSize.SMALL;
+                        switch (crops.getSize()) {
+                            case SMALL: {
+                                cropState = CocoaPlant.CocoaPlantSize.MEDIUM;
+                                break;
+                            }
+                            case MEDIUM: {
+                                cropState = CocoaPlant.CocoaPlantSize.LARGE;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
                         }
-                        case GERMINATED: {
-                            cropState = CropState.VERY_SMALL;
-                            break;
+                        crops.setSize(cropState);
+                        state.setData(crops);
+                        state.update();
+                        if (wand.particle) {
+                            ParticleUtil.playParticle(wand.particleType, block);
                         }
-                        case VERY_SMALL: {
-                            cropState = CropState.SMALL;
-                            break;
+                    });
+                } else {
+                    Crops crops = (Crops) state.getData();
+                    if (crops.getState().equals(CropState.RIPE)) continue;
+                    Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
+                        CropState cropState = CropState.SEEDED;
+                        switch (crops.getState()) {
+                            case SEEDED: {
+                                cropState = CropState.GERMINATED;
+                                break;
+                            }
+                            case GERMINATED: {
+                                cropState = CropState.VERY_SMALL;
+                                break;
+                            }
+                            case VERY_SMALL: {
+                                cropState = CropState.SMALL;
+                                break;
+                            }
+                            case SMALL: {
+                                cropState = CropState.MEDIUM;
+                                break;
+                            }
+                            case MEDIUM: {
+                                cropState = CropState.TALL;
+                                break;
+                            }
+                            case TALL: {
+                                cropState = CropState.VERY_TALL;
+                                break;
+                            }
+                            case VERY_TALL: {
+                                cropState = CropState.RIPE;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
                         }
-                        case SMALL: {
-                            cropState = CropState.MEDIUM;
-                            break;
+                        crops.setState(cropState);
+                        state.setData(crops);
+                        state.update();
+                        if (wand.particle) {
+                            ParticleUtil.playParticle(wand.particleType, block);
                         }
-                        case MEDIUM: {
-                            cropState = CropState.TALL;
-                            break;
-                        }
-                        case TALL: {
-                            cropState = CropState.VERY_TALL;
-                            break;
-                        }
-                        case VERY_TALL: {
-                            cropState = CropState.RIPE;
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                    crops.setState(cropState);
-                    state.setData(crops);
-                    state.update();
-                    if (wand.particle) {
-                        ParticleUtil.playParticle(wand.particleType, block);
-                    }
-                });
+                    });
+                }
                 amount++;
             }
         }

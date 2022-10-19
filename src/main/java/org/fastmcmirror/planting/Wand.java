@@ -2,6 +2,7 @@ package org.fastmcmirror.planting;
 
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.fastmcmirror.planting.utils.LocationOffset;
 import org.fastmcmirror.planting.utils.MessageType;
 import org.fastmcmirror.planting.utils.Payment;
 
@@ -25,10 +26,11 @@ public class Wand {
     public String modelid;
     public Material farmblock;
     public Payment payment;
+    public LocationOffset offset;
 
     public Wand(int range, Material plant, String permission, String message, MessageType messageType, long cooldown, boolean disposable, boolean particle, Particle particleType
             , boolean model, String modelid, Material farmblock,
-                Payment payment) {
+                Payment payment, LocationOffset offset) {
         this.range = range;
         this.plant = plant;
         this.permission = permission;
@@ -43,5 +45,6 @@ public class Wand {
         this.modelid = modelid;
         this.farmblock = farmblock;
         this.payment = payment;
+        this.offset = offset;
     }
 }

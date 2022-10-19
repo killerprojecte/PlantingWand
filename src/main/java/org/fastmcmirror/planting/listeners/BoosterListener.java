@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.Crops;
 import org.fastmcmirror.planting.PlantingWand;
 import org.fastmcmirror.planting.Wand;
@@ -36,20 +38,33 @@ public class BoosterListener implements Listener {
                 if (!location.getWorld().getBlockAt(location1).getType().equals(wand.plant)) continue;
                 Block block = location.getWorld().getBlockAt(location1);
                 BlockState state = block.getState();
-                Crops crops = (Crops) state.getData();
-                if (crops.getState().equals(CropState.RIPE)) continue;
                 if (!PlantingWand.economics.get(wand.payment.type).has(player, wand.payment.count)) {
                     player.sendMessage(Color.color(PlantingWand.lang.not_enough));
                     break all;
                 }
-                Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
-                    crops.setState(CropState.RIPE);
-                    state.setData(crops);
-                    state.update();
-                    if (wand.particle) {
-                        ParticleUtil.playParticle(wand.particleType, block);
-                    }
-                });
+                if (block.getType().equals(Material.COCOA)) {
+                    CocoaPlant crops = (CocoaPlant) state.getData();
+                    if (crops.getSize().equals(CocoaPlant.CocoaPlantSize.LARGE)) continue;
+                    Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
+                        crops.setSize(CocoaPlant.CocoaPlantSize.LARGE);
+                        state.setData(crops);
+                        state.update();
+                        if (wand.particle) {
+                            ParticleUtil.playParticle(wand.particleType, block);
+                        }
+                    });
+                } else {
+                    Crops crops = (Crops) state.getData();
+                    if (crops.getState().equals(CropState.RIPE)) continue;
+                    Bukkit.getScheduler().runTask(PlantingWand.instance, () -> {
+                        crops.setState(CropState.RIPE);
+                        state.setData(crops);
+                        state.update();
+                        if (wand.particle) {
+                            ParticleUtil.playParticle(wand.particleType, block);
+                        }
+                    });
+                }
                 amount++;
             }
         }

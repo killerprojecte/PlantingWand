@@ -21,10 +21,7 @@ import org.fastmcmirror.planting.model.ItemModsModel;
 import org.fastmcmirror.planting.model.ItemsAdderModel;
 import org.fastmcmirror.planting.model.SimpleModel;
 import org.fastmcmirror.planting.nms.*;
-import org.fastmcmirror.planting.utils.Lang;
-import org.fastmcmirror.planting.utils.MessageType;
-import org.fastmcmirror.planting.utils.Payment;
-import org.fastmcmirror.planting.utils.Version;
+import org.fastmcmirror.planting.utils.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -195,7 +192,10 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getString("wands." + name + ".modelid"),
                     Material.getMaterial(getConfig().getString("wands." + name + ".farmblock", "FARMLAND")),
                     new Payment(getConfig().getString("wands." + name + ".payment.type").toLowerCase(),
-                            getConfig().getDouble("wands." + name + ".payment.count"))
+                            getConfig().getDouble("wands." + name + ".payment.count")),
+                    new LocationOffset(getConfig().getInt("wands." + name + ".offset.x", 0),
+                            getConfig().getInt("wands." + name + ".offset.y", 1),
+                            getConfig().getInt("wands." + name + ".offset.z", 0))
             ));
         }
     }
@@ -218,7 +218,10 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getString("boosters." + name + ".modelid", "unknow"),
                     Material.getMaterial(getConfig().getString("boosters." + name + ".farmblock", "FARMLAND")),
                     new Payment(getConfig().getString("boosters." + name + ".payment.type").toLowerCase(),
-                            getConfig().getDouble("boosters." + name + ".payment.count"))
+                            getConfig().getDouble("boosters." + name + ".payment.count")),
+                    new LocationOffset(getConfig().getInt("boosters." + name + ".offset.x", 0),
+                            getConfig().getInt("boosters." + name + ".offset.y", 1),
+                            getConfig().getInt("boosters." + name + ".offset.z", 0))
             ));
         }
     }
@@ -241,7 +244,10 @@ public final class PlantingWand extends JavaPlugin {
                     getConfig().getString("levelup." + name + ".modelid", "unknow"),
                     Material.getMaterial(getConfig().getString("levelup." + name + ".farmblock", "FARMLAND")),
                     new Payment(getConfig().getString("levelup." + name + ".payment.type").toLowerCase(),
-                            getConfig().getDouble("levelup." + name + ".payment.count"))
+                            getConfig().getDouble("levelup." + name + ".payment.count")),
+                    new LocationOffset(getConfig().getInt("levelup." + name + ".offset.x", 0),
+                            getConfig().getInt("levelup." + name + ".offset.y", 1),
+                            getConfig().getInt("levelup." + name + ".offset.z", 0))
             ));
         }
     }

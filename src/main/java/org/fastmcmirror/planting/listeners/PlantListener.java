@@ -32,7 +32,7 @@ public class PlantListener implements Listener {
             for (int z = (int) (location.getBlockZ() - range); z <= location.getBlockZ() + range; z++) {
                 Location under = new Location(location.getWorld(), x, location.getBlockY(), z);
                 if (!location.getWorld().getBlockAt(under).getType().equals(wand.farmblock)) continue;
-                Location location1 = new Location(location.getWorld(), x, location.getBlockY() + 1, z);
+                Location location1 = new Location(location.getWorld(), x + wand.offset.x, location.getBlockY() + wand.offset.y, z + wand.offset.z);
                 if (!location.getWorld().getBlockAt(location1).getType().equals(Material.AIR)) continue;
                 if (!PlantingWand.economics.get(wand.payment.type).has(player, wand.payment.count)) {
                     player.sendMessage(Color.color(PlantingWand.lang.not_enough));
