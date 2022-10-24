@@ -18,4 +18,10 @@ command:
   show: "&e&lAvailable Wands in Item:"
 cooldown: "&cYour need to wait &e%cooldown% sec &cto use this wand!"
 unknow-payment: "&cUnknown payment method"
-not-enough: "&c余额不足 无法继续操作"
+not-enough: "&cMoney not enough"
+seedbank:
+  title: "&8&lSeed Bank"
+  success: "&a&lYou deposit %amount% x %item%"
+  button: "&a&lClick to deposit all"
+  left: "&8&l>>"
+  right: "&8&l<<"

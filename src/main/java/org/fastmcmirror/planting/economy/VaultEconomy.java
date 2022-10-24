@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.fastmcmirror.planting.PlantingWand;
+import org.fastmcmirror.planting.Wand;
 
 public class VaultEconomy extends SimpleEconomy {
 
@@ -28,7 +29,7 @@ public class VaultEconomy extends SimpleEconomy {
     }
 
     @Override
-    public boolean takeMoney(Player player, double amount) {
+    public boolean takeMoney(Player player, double amount, Wand wand) {
         if (economy.has(player, amount)) {
             economy.withdrawPlayer(player, amount);
             return true;
@@ -37,7 +38,7 @@ public class VaultEconomy extends SimpleEconomy {
     }
 
     @Override
-    public boolean has(Player player, double amount) {
+    public boolean has(Player player, double amount, Wand wand) {
         return economy.has(player, amount);
     }
 }

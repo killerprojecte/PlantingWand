@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.fastmcmirror'
-version = '1.0.1-SNAPSHOT'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
@@ -18,7 +18,7 @@ repositories {
     }
     maven {
         name = 'FastMCMirror Repo'
-        url = 'https://repo.fastmcmirror.org/content/repositories/releases/'
+        url = 'https://repo.fastmcmirror.org/content/groups/public/'
     }
     maven {
         url = 'https://jitpack.io/'
@@ -38,10 +38,12 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     compileOnly 'com.github.LoneDev6:api-itemsadder:3.0.0'
     compileOnly 'dev.linwood:ItemMods:2.0.0-alpha.1'
-    compileOnly 'com.github.oraxen:oraxen:-SNAPSHOT'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     compileOnly 'org.black_ixx:playerpoints:3.2.4'
     compileOnly 'momirealms:customcrops:2.0.1'
+    compileOnly 'su.nightexpress:gamepoints:1.3.4'
+    compileOnly 'su.nightexpress:engine:1.0.0'
+    compileOnly 'org.fastmcmirror:BarterEconomy:1.0.0'
     dl('1.13')
     dl('1.13.1')
     dl('1.13.2')

@@ -10,6 +10,8 @@ softdepend:
   - Vault
   - PlayerPoints
   - CustomCrops
+  - GamePoints
+  - BarterEconomy
 commands:
   plantingwand:
     permission: plantingwand.admin
@@ -18,10 +20,17 @@ commands:
       - plantwand
       - plantingw
       - pw
+  seedbank:
+    permission: plantingwand.seedbank
+    aliases:
+      - seedb
+      - sbank
 permissions:
   plantingwand.*:
     default: op
   plantingwand.admin:
     default: op
   plantingwand.example:
+    default: true
+  plantingwand.seedbank:
     default: true

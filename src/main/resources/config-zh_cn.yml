@@ -8,6 +8,7 @@ wands:
     farmblock: FARMLAND
     plant: WHEAT
     permission: "plantingwand.example"
+    # 可选: %int_count%
     message: "&a您已快速种植 &e%amount% 个%item% &e| &f花费 %count% 金币"
     cooldown: 10
     #actionbar / chat
@@ -18,6 +19,7 @@ wands:
     model: false
     modelid: unknow
     payment:
+      #vault / playerpoints / none / gamepoints / bartereco:${registry_name in bartereco.yml}
       type: vault
       count: 1000
     offset:
@@ -29,6 +31,7 @@ boosters:
     range: 5
     plant: WHEAT
     permission: "plantingwand.example"
+    # 可选: %int_count%
     message: "&a您已使 &e%amount% 个%item% &a快速成长 &e| &f花费 %count% 金币"
     cooldown: 30
     #actionbar / chat
@@ -37,6 +40,7 @@ boosters:
     particle: true
     particletype: VILLAGER_HAPPY
     payment:
+      #vault / playerpoints / none / gamepoints / bartereco:${registry_name in bartereco.yml}
       type: vault
       count: 1000
 levelup:
@@ -44,6 +48,7 @@ levelup:
     range: 5
     plant: WHEAT
     permission: "plantingwand.example"
+    # 可选: %int_count%
     message: "&a您已使 &e%amount% 个%item% &a提升一级 &e| &f花费 %count% 金币"
     cooldown: 15
     #actionbar / chat
@@ -52,5 +57,6 @@ levelup:
     particle: true
     particletype: VILLAGER_HAPPY
     payment:
+      #vault / playerpoints / none / gamepoints / bartereco:${registry_name in bartereco.yml}
       type: vault
       count: 1000

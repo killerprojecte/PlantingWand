@@ -1,0 +1,8 @@
+#CN: 这个配置文件仅为使用BarterEconomy的用户提供
+#EN: This profile is only available for users of BarterEconomy
+currency:
+  #registry name -
+  #         currency name in BarterEconomy
+  #注册名 -
+  #         BarterEconomy货币名称
+  "wheat": WHEAT_SEEDS

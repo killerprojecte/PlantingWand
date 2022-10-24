@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.CocoaPlant;
@@ -38,7 +39,7 @@ public class LevelUpListener implements Listener {
                 if (!location.getWorld().getBlockAt(location1).getType().equals(wand.plant)) continue;
                 Block block = location.getWorld().getBlockAt(location1);
                 BlockState state = block.getState();
-                if (!PlantingWand.economics.get(wand.payment.type).has(player, wand.payment.count)) {
+                if (!PlantingWand.economics.get(wand.payment.type).has(player, wand.payment.count, wand)) {
                     player.sendMessage(Color.color(PlantingWand.lang.not_enough));
                     break all;
                 }
@@ -117,13 +118,14 @@ public class LevelUpListener implements Listener {
             }
         }
         long finalAmount = amount;
-        Bukkit.getScheduler().runTask(PlantingWand.instance, () -> PlantingWand.economics.get(wand.payment.type).takeMoney(player, wand.payment.count * finalAmount));
+        Bukkit.getScheduler().runTask(PlantingWand.instance, () -> PlantingWand.economics.get(wand.payment.type).takeMoney(player, wand.payment.count * finalAmount, wand));
         return amount;
     }
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+        if (!event.getHand().equals(EquipmentSlot.HAND)) return;
         Player player = event.getPlayer();
         String display = null;
         ItemStack item = player.getItemInHand();
@@ -158,11 +160,15 @@ public class LevelUpListener implements Listener {
             item.setAmount(item.getAmount() - 1);
         }
         Bukkit.getScheduler().runTaskAsynchronously(PlantingWand.instance, () -> {
+            if (wand.cooldowns.containsKey(player.getUniqueId())) return;
             long amount = levelupPlants(location, wand, player);
+            int count = (int) (amount * wand.payment.count);
             if (wand.messageType.equals(MessageType.ACTIONBAR)) {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%count%", String.valueOf(amount * wand.payment.count)))));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%count%", String.valueOf(amount * wand.payment.count))
+                        .replace("%int_count%", String.valueOf(count)))));
             } else {
-                player.sendMessage(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%count%", String.valueOf(amount * wand.payment.count))));
+                player.sendMessage(Color.color(wand.message.replace("%amount%", String.valueOf(amount)).replace("%item%", PlantingWand.iapi.getItemName(wand.plant.toString())).replace("%count%", String.valueOf(amount * wand.payment.count))
+                        .replace("%int_count%", String.valueOf(count))));
             }
             if (wand.cooldown != 0L) {
                 wand.cooldowns.put(player.getUniqueId(), wand.cooldown);

@@ -20,3 +20,9 @@ command:
 cooldown: "&c您还需要等待 &e%cooldown%秒 &c才能使用此魔杖!"
 unknow-payment: "&c未知付款方式"
 not-enough: "&c余额不足 无法继续操作"
+seedbank:
+  title: "&8&l种子银行"
+  success: "&a&l您已存入 %amount% 个 %item%"
+  button: "&a&l点击存入"
+  left: "&8&l>>"
+  right: "&8&l<<"

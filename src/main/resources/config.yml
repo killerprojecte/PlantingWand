@@ -8,6 +8,7 @@ wands:
     farmblock: FARMLAND
     plant: WHEAT
     permission: "plantingwand.example"
+    # optional: %int_count%
     message: "&aYou planted &e%amount% &agrains of &f&l%item% &e| &fPaid %count% Coins"
     cooldown: 10
     #actionbar / chat
@@ -18,6 +19,7 @@ wands:
     model: false
     modelid: unknow
     payment:
+      #vault / playerpoints / none / gamepoints / bartereco:${registry_name in bartereco.yml}
       type: vault
       count: 1000
     offset:
@@ -29,6 +31,7 @@ boosters:
     range: 5
     plant: WHEAT
     permission: "plantingwand.example"
+    # optional: %int_count%
     message: "&aYou let &e%amount% &agrains of &f&l%item% &aripen &e| &fPaid %count% Coins"
     cooldown: 30
     #actionbar / chat
@@ -37,6 +40,7 @@ boosters:
     particle: true
     particletype: VILLAGER_HAPPY
     payment:
+      #vault / playerpoints / none / gamepoints / bartereco:${registry_name in bartereco.yml}
       type: vault
       count: 1000
 levelup:
@@ -44,6 +48,7 @@ levelup:
     range: 5
     plant: WHEAT
     permission: "plantingwand.example"
+    # optional: %int_count%
     message: "&aYou let &e%amount% &agrains of &f&l%item% &alevelup &e| &fPaid %count% Coins"
     cooldown: 15
     #actionbar / chat
@@ -52,5 +57,6 @@ levelup:
     particle: true
     particletype: VILLAGER_HAPPY
     payment:
+      #vault / playerpoints / none / gamepoints / bartereco:${registry_name in bartereco.yml}
       type: vault
       count: 1000

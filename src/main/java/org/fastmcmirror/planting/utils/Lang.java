@@ -18,6 +18,11 @@ public class Lang {
     public final String command_help_show;
     public final String unknow_payment;
     public final String not_enough;
+    public final String seedbank_title;
+    public final String seedbank_success;
+    public final String seedbank_button;
+    public final String seedbank_left;
+    public final String seedbank_right;
 
     public Lang(String command_reload,
                 String command_list_wandlist,
@@ -35,7 +40,12 @@ public class Lang {
                 String command_show,
                 String command_help_show,
                 String unknow_payment,
-                String not_enough) {
+                String not_enough,
+                String seedbank_title,
+                String seedbank_success,
+                String seedbank_button,
+                String seedbank_left,
+                String seedbank_right) {
         this.command_reload = command_reload;
         this.command_list_wandlist = command_list_wandlist;
         this.command_list_plantingwand = command_list_plantingwand;
@@ -53,5 +63,10 @@ public class Lang {
         this.command_help_show = command_help_show;
         this.unknow_payment = unknow_payment;
         this.not_enough = not_enough;
+        this.seedbank_title = seedbank_title;
+        this.seedbank_success = seedbank_success;
+        this.seedbank_button = seedbank_button;
+        this.seedbank_left = seedbank_left;
+        this.seedbank_right = seedbank_right;
     }
 }

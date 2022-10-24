@@ -5,6 +5,7 @@ import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.fastmcmirror.planting.PlantingWand;
+import org.fastmcmirror.planting.Wand;
 
 public class PlayerPointsEconomy extends SimpleEconomy {
     private final PlayerPointsAPI api;
@@ -22,7 +23,7 @@ public class PlayerPointsEconomy extends SimpleEconomy {
     }
 
     @Override
-    public boolean takeMoney(Player player, double amount) {
+    public boolean takeMoney(Player player, double amount, Wand wand) {
         if (api.look(player.getUniqueId()) < amount) {
             return false;
         }
@@ -31,7 +32,7 @@ public class PlayerPointsEconomy extends SimpleEconomy {
     }
 
     @Override
-    public boolean has(Player player, double amount) {
+    public boolean has(Player player, double amount, Wand wand) {
         return api.look(player.getUniqueId()) >= amount;
     }
 }
