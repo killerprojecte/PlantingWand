@@ -60,6 +60,7 @@ public final class PlantingWand extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("BarterEconomy") != null) {
             saveFile("bartereco.yml");
         }
+        new Metrics(this);
         Bukkit.getPluginManager().registerEvents(new PlantListener(), this);
         Bukkit.getPluginManager().registerEvents(new BoosterListener(), this);
         Bukkit.getPluginManager().registerEvents(new LevelUpListener(), this);
