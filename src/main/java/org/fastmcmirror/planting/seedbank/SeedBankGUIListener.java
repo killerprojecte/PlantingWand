@@ -17,6 +17,7 @@ public class SeedBankGUIListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.isCancelled()) return;
+        if (event.getClickedInventory() == null) return;
         if (event.getClickedInventory().getHolder() == null) return;
         if (!(event.getClickedInventory().getHolder() instanceof SeedBankHolder)) return;
         if (event.getSlot() != 4 && event.getSlot() != 8) {
