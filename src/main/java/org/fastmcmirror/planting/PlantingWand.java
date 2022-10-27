@@ -347,7 +347,7 @@ public final class PlantingWand extends JavaPlugin {
         if (!replace) {
             if (file.exists()) return;
         }
-        if (!file.getParentFile().exists()) file.getParenrFile().mkdirs();
+        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
         URLConnection connection = null;
         try {
             connection = url.openConnection();
