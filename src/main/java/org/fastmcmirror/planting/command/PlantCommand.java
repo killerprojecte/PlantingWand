@@ -31,7 +31,7 @@ public class PlantCommand implements CommandExecutor {
                 PlantingWand.instance.reloadWands();
                 PlantingWand.instance.reloadBoosters();
                 PlantingWand.instance.reloadLevelUpWands();
-                PlantingWand.instance.registerBarterEconomy();
+                if (Bukkit.getPluginManager().getPlugin("BarterEconomy") != null) PlantingWand.instance.registerBarterEconomy();
                 Bukkit.getScheduler().runTaskAsynchronously(PlantingWand.instance, () -> {
                     PlantingWand.iapi = new InternationalizationAPI(PlantingWand.getMinecraftVersion(Bukkit.getBukkitVersion()), MinecraftLanguage.valueOf(PlantingWand.instance.getConfig().getString("i18n")), PlantingWand.instance.getDataFolder() + "/i18n/");
                 });
